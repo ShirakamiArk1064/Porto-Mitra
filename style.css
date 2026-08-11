@@ -11,11 +11,33 @@
   --card-bg: #e8f2fc;
   --card-heading: #2f7fd6;
   --card-text: #4a8cd6;
+  --page-bg: #ffffff;
+  --text-on-dark: #ffffff;
+}
+html[data-theme="dark"]{
+  --blue-dark: #0d1d3d;
+  --blue-navbar: #17233f;
+  --blue-hero: #1c2f52;
+  --blue-section: #16223d;
+  --blue-section-alt: #1b2a4a;
+  --gold: #f2c94c;
+  --white: #202a42;
+  --text-dark: #eaf0fb;
+  --text-light: #eaf2ff;
+  --card-bg: #202a42;
+  --card-heading: #f2c94c;
+  --card-text: #b7c6e6;
+  --page-bg: #0b1226;
 }
 *{box-sizing:border-box; margin:0; padding:0;}
+html{
+  scroll-behavior: smooth;
+}
 body{
   font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
   color: var(--text-dark);
+  background: var(--page-bg);
+  transition: background 0.3s ease, color 0.3s ease;
 }
 img{ max-width:100%; display:block; }
 
@@ -23,15 +45,22 @@ img{ max-width:100%; display:block; }
 /* ===== NAVBAR ===== */
 .navbar{
   background: var(--blue-navbar);
+  padding: 10px 30px;
+}
+.navbar-inner{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding: 10px 30px;
+  max-width: 1300px;
+  margin: 0 auto;
 }
 .logo-group{
   display:flex;
   align-items:center;
   gap:10px;
+  background: #ffffff;
+  padding: 6px 14px;
+  border-radius: 10px;
 }
 .logo-img{
   height:90px;
@@ -63,6 +92,28 @@ img{ max-width:100%; display:block; }
 .nav-links a.gallery-link{
   margin-left:38px;
 }
+.theme-toggle{
+  margin-left: 26px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,0.18);
+  cursor: pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size: 18px;
+  transition: background 0.2s ease, transform 0.2s ease;
+  flex-shrink: 0;
+}
+.theme-toggle:hover{
+  background: rgba(255,255,255,0.3);
+  transform: scale(1.08);
+}
+.theme-icon{
+  line-height: 1;
+}
 
 /* ===== HERO ===== */
 .hero{
@@ -70,11 +121,17 @@ img{ max-width:100%; display:block; }
   padding: 50px 40px;
   position:relative;
   overflow:hidden;
+}
+.hero-inner{
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:70px;
   flex-wrap:wrap;
+  max-width: 1300px;
+  margin: 0 auto;
+  position:relative;
+  z-index:2;
 }
 .hero-decoration{
   position:absolute;
@@ -88,7 +145,7 @@ img{ max-width:100%; display:block; }
 }
 .hero-box{
   background: var(--blue-dark);
-  color: var(--white);
+  color: var(--text-on-dark);
   padding: 30px 34px;
   border-radius: 20px;
   font-size: 26px;
@@ -216,7 +273,7 @@ img{ max-width:100%; display:block; }
   align-items:center;
   justify-content:center;
   gap:12px;
-  color: var(--blue-dark);
+  color: var(--text-dark);
   font-size: 30px;
   font-weight: 800;
   text-align:center;
@@ -317,7 +374,7 @@ img{ max-width:100%; display:block; }
 }
 .institution-name{
   display:inline-block;
-  background: rgba(255,255,255,0.85);
+  background: var(--card-bg);
   color: var(--card-heading);
   font-size: 24px;
   font-weight: 600;
@@ -334,7 +391,7 @@ img{ max-width:100%; display:block; }
   top:0; right:0;
   width:45%;
   height:100%;
-  background-image: url('images/bintang-jatuh-asli.png');
+  background-image: url('Gambar/bintang-jatuh-asli.png');
   background-size: cover;
   background-position: center;
   opacity:0.9;
@@ -361,19 +418,15 @@ img{ max-width:100%; display:block; }
   position:relative;
   max-width: 560px;
   margin: 0 auto;
-  background: var(--white);
-  padding: 16px 16px 50px;
-  border-radius: 2px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+  overflow:hidden;
 }
 .carousel-track{
   display:flex;
   transition: transform 0.6s ease-in-out;
-  overflow:hidden;
 }
 .carousel-slide{
-  min-width:100%;
-  flex-shrink:0;
+  flex: 0 0 100%;
+  width:100%;
 }
 .carousel-slide img{
   width:100%;
@@ -388,6 +441,39 @@ img{ max-width:100%; display:block; }
   transform:translateX(-50%);
   display:flex;
   gap:8px;
+}
+
+/* ===== GALLERY: 2 foto berdampingan dengan bingkai emas ===== */
+.gallery-photos .carousel{
+  max-width: 720px;
+}
+.gallery-photos .carousel-slide{
+  display:flex;
+  gap:20px;
+  justify-content:center;
+  align-items:flex-start;
+}
+.gallery-photo{
+  flex: 1 1 0;
+  max-width: 340px;
+  border: 4px solid var(--gold);
+  border-radius: 4px;
+  overflow:hidden;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+.gallery-photo img{
+  width:100%;
+  height:230px;
+  object-fit:cover;
+  display:block;
+}
+.gallery-photos .carousel-dots{
+  position:static;
+  left:auto;
+  transform:none;
+  display:flex;
+  justify-content:center;
+  margin-top:16px;
 }
 .carousel-dot{
   width:9px;
@@ -422,8 +508,16 @@ img{ max-width:100%; display:block; }
   .gallery-photos{
     padding: 20px 20px;
   }
-  .carousel-slide img{
-    height: 220px;
+  .gallery-photos .carousel-slide{
+    flex-wrap:wrap;
+    gap:14px;
+  }
+  .gallery-photo{
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+  .gallery-photo img{
+    height: 200px;
   }
 }
 
@@ -432,11 +526,11 @@ img{ max-width:100%; display:block; }
   background: var(--blue-navbar);
   display:flex;
   justify-content:center;
-  padding: 30px 20px;
+  padding: 20px 20px;
 }
 .divider-img{
   width: 100%;
-  max-width: 700px;
+  max-width: 500px;
   height: auto;
 }
 /* ===== KONTAK ===== */
@@ -458,21 +552,21 @@ img{ max-width:100%; display:block; }
   pointer-events:none;
 }
 .kontak-inner{
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 0 auto;
   position:relative;
   z-index:1;
   text-align:center;
 }
 .kontak-title{
-  color: var(--white);
+  color: var(--text-on-dark);
   font-size: 34px;
   font-weight: 700;
   margin-bottom: 32px;
 }
 .kontak-card{
   background: var(--blue-dark);
-  color: var(--white);
+  color: var(--text-on-dark);
   border-radius: 14px;
   padding: 28px 32px;
   max-width: 460px;
@@ -486,20 +580,23 @@ img{ max-width:100%; display:block; }
   opacity: 0.9;
 }
 .kontak-card-social{
-  max-width: 560px;
+  max-width: 340px;
+  flex: 1 1 300px;
   text-align:center;
-  padding: 36px 40px;
+  padding: 30px 26px;
 }
 .kontak-social-img{
   width:100%;
+  height:auto;
+  object-fit:initial;
   border-radius: 10px;
   display:block;
-  margin-bottom: 26px;
+  margin-bottom: 22px;
 }
 .kontak-ig-button{
   display:inline-block;
   background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-  color: var(--white);
+  color: var(--text-on-dark);
   text-decoration:none;
   font-weight:700;
   font-size: 17px;
@@ -513,15 +610,14 @@ img{ max-width:100%; display:block; }
 .kontak-web-button{
   background: linear-gradient(45deg, var(--blue-navbar), var(--blue-dark));
 }
-.social-carousel{
-  background: transparent;
-  box-shadow: none;
-  padding: 0 0 46px;
-  max-width: 560px;
+.social-row{
+  display:flex;
+  justify-content:center;
+  align-items:stretch;
+  flex-wrap: wrap;
 }
-.social-carousel .carousel-slide img.kontak-social-img{
-  height:auto;
-  object-fit:initial;
+.social-row .kontak-card-social{
+  margin: 0 14px 20px;
 }
 .kontak-text{
   font-size: 15px;
@@ -612,52 +708,4 @@ img{ max-width:100%; display:block; }
   .alamat-map{
     height: 260px;
   }
-}
-
-.gallery-swiper {
-
-  width: 100%;
-
-  padding: 15px 40px 55px;
-
-  box-sizing: border-box;
-
-  overflow: hidden;
-}
-
-
-/* =========================================
-   SWIPER SLIDE
-========================================= */
-
-.gallery-swiper .swiper-slide {
-
-  height: auto;
-
-  box-sizing: border-box;
-
-}
-.gallery-swiper .swiper-pagination {
-
-  bottom: 15px !important;
-
-}
-
-
-.gallery-swiper
-.swiper-pagination-bullet {
-
-  width: 9px;
-  height: 9px;
-
-  opacity: 0.45;
-
-}
-
-
-.gallery-swiper
-.swiper-pagination-bullet-active {
-
-  opacity: 1;
-
 }
