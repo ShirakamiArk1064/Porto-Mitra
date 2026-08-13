@@ -271,19 +271,19 @@
         <div class="kontak-card kontak-card-social">
           <img src="Gambar/instagram-profile.png" alt="Instagram jepang.uai" class="kontak-social-img">
           <a href="https://www.instagram.com/jepang.uai/" target="_blank" rel="noopener" class="kontak-ig-button">
-            Kunjungi Instagram @jepang.uai
+            Kunjungi Instagram Prodi Bahasa dan Kebudayaan Jepang UAI 
           </a>
         </div>
         <div class="kontak-card kontak-card-social">
           <img src="Gambar/instagram-himanizhar.png" alt="Instagram himanizhar_uai" class="kontak-social-img">
           <a href="https://www.instagram.com/himanizhar_uai/" target="_blank" rel="noopener" class="kontak-ig-button">
-            Kunjungi Instagram @himanizhar_uai
+            Kunjungi Instagram Hima Prodi Bahasa dan Kebudayaan Jepang UAI 
           </a>
         </div>
         <div class="kontak-card kontak-card-social">
           <img src="Gambar/website-uai.png" alt="Website resmi Prodi Bahasa dan Kebudayaan Jepang UAI" class="kontak-social-img">
           <a href="https://uai.ac.id/fib/jepang/" target="_blank" rel="noopener" class="kontak-ig-button kontak-web-button">
-            Kunjungi Website Resmi
+            Kunjungi Website Resmi Prodi Bahasa dan Kebudayaan Jepang UAI
           </a>
         </div>
         <!-- Kartu media sosial lain akan ditambahkan di sini -->
@@ -356,23 +356,37 @@
         });
       }
     })();
-    // ===== GALLERY & SOSIAL CAROUSEL: AUTOPLAY + SWIPE =====
+   // ===== GALLERY & SOSIAL CAROUSEL: AUTOPLAY + SWIPE (infinite loop, selalu maju) =====
     document.querySelectorAll('.carousel').forEach(function(carousel){
       const track = carousel.querySelector('.carousel-track');
-      const slides = carousel.querySelectorAll('.carousel-slide');
       const dotsWrap = carousel.querySelector('.carousel-dots');
+      const realSlides = Array.from(carousel.querySelectorAll('.carousel-slide'));
+      const N = realSlides.length;
 
       // Berapa foto yang terlihat sekaligus (default 1). Gallery pakai data-visible="2"
       const visible = parseInt(carousel.getAttribute('data-visible'), 10) || 1;
-      // Index maksimum supaya slide terakhir selalu penuh (tidak ada slot kosong)
-      const maxIndex = Math.max(0, slides.length - visible);
       const stepPercent = 100 / visible;
+
+      // Kalau foto lebih sedikit/sama dengan yang terlihat sekaligus, tidak perlu geser
+      if (N <= visible) { return; }
+
+      // Klona `visible` foto pertama dan taruh di akhir track,
+      // supaya saat geser sampai ujung, track "menyambung" mulus ke awal lagi
+      // tanpa harus terlihat loncat balik.
+      for (let c = 0; c < visible; c++){
+        const clone = realSlides[c].cloneNode(true);
+        clone.setAttribute('aria-hidden', 'true');
+        track.appendChild(clone);
+      }
+
+      const realMaxIndex = N - visible;  // posisi terakhir yang masih 100% foto asli
+      const loopIndex = N;               // posisi ini tampilannya identik dengan index 0 (klona penuh)
+      const dotsCount = realMaxIndex + 1;
 
       let index = 0;
       let timer = null;
 
-      // Buat 1 titik indikator per posisi geser yang valid (bukan per foto)
-      for (let i = 0; i <= maxIndex; i++){
+      for (let i = 0; i < dotsCount; i++){
         const dot = document.createElement('span');
         dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
         dot.addEventListener('click', function(){ goTo(i); resetTimer(); });
@@ -380,15 +394,37 @@
       }
       const dots = dotsWrap.querySelectorAll('.carousel-dot');
 
-      function goTo(i){
-        index = Math.max(0, Math.min(i, maxIndex));
+      function setActiveDot(i){
+        const active = Math.min(i, realMaxIndex);
+        dots.forEach(function(d, di){ d.classList.toggle('active', di === active); });
+      }
+
+      function goTo(i, instant){
+        index = i;
+        track.style.transition = instant ? 'none' : '';
         track.style.transform = 'translateX(-' + (index * stepPercent) + '%)';
-        dots.forEach(function(d, di){ d.classList.toggle('active', di === index); });
+        setActiveDot(index);
+        if (instant){
+          void track.offsetHeight; // paksa reflow supaya transition aktif lagi setelahnya
+          track.style.transition = '';
+        }
       }
 
       function next(){
-        goTo(index >= maxIndex ? 0 : index + 1);
+        goTo(index + 1);
       }
+
+      function prev(){
+        goTo(Math.max(0, index - 1));
+      }
+
+      // Begitu sampai di posisi "klona" (identik dengan awal), lompat diam-diam
+      // (tanpa animasi) balik ke index 0 asli, supaya geser berikutnya tetap mulus.
+      track.addEventListener('transitionend', function(){
+        if (index === loopIndex){
+          goTo(0, true);
+        }
+      });
 
       function resetTimer(){
         clearInterval(timer);
@@ -400,10 +436,6 @@
       // ===== SWIPE / DRAG SUPPORT =====
       let startX = 0;
       let isDragging = false;
-
-      function prev(){
-        goTo(index <= 0 ? maxIndex : index - 1);
-      }
 
       function swipeStart(x){
         startX = x;
@@ -442,7 +474,58 @@
         if(isDragging){ isDragging = false; resetTimer(); }
       });
     });
-  </script>
+ // ===== MOBILE HAMBURGER MENU =====
+    (function(){
+      const navbar = document.querySelector('.navbar');
+      const navbarInner = document.querySelector('.navbar-inner');
+      const navLinks = document.querySelector('.nav-links');
 
+      if(!navbar || !navbarInner || !navLinks) return;
+
+      // Prevent duplicate buttons if the script is accidentally loaded twice.
+      if(document.querySelector('.mobile-menu-button')) return;
+
+      const menuButton = document.createElement('button');
+      menuButton.className = 'mobile-menu-button';
+      menuButton.type = 'button';
+      menuButton.setAttribute('aria-label', 'Buka menu');
+      menuButton.setAttribute('aria-expanded', 'false');
+      menuButton.innerHTML = '<span></span><span></span><span></span>';
+
+      navbarInner.insertBefore(menuButton, navbarInner.firstChild);
+
+      function closeMenu(){
+        navLinks.classList.remove('mobile-menu-active');
+        menuButton.classList.remove('active');
+        menuButton.setAttribute('aria-expanded', 'false');
+        menuButton.setAttribute('aria-label', 'Buka menu');
+      }
+
+      function toggleMenu(){
+        const isOpen = navLinks.classList.toggle('mobile-menu-active');
+        menuButton.classList.toggle('active', isOpen);
+        menuButton.setAttribute('aria-expanded', String(isOpen));
+        menuButton.setAttribute('aria-label', isOpen ? 'Tutup menu' : 'Buka menu');
+      }
+
+      menuButton.addEventListener('click', function(e){
+        e.stopPropagation();
+        toggleMenu();
+      });
+
+      navLinks.querySelectorAll('a').forEach(function(link){
+        link.addEventListener('click', closeMenu);
+      });
+
+      document.addEventListener('click', function(e){
+        if(!navbar.contains(e.target)) closeMenu();
+      });
+
+      window.addEventListener('resize', function(){
+        if(window.innerWidth > 640) closeMenu();
+      });
+    })();
+
+  </script>
 </body>
 </html>
