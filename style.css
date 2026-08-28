@@ -414,6 +414,39 @@ img{ max-width:100%; display:block; }
   padding: 25px 40px;
 }
 
+/* ===== Dekorasi khusus dark mode di samping kiri & kanan swiper ===== */
+.gallery-photos-with-decor{
+  position: relative;
+}
+.gallery-dark-decor{
+  display: none; /* sembunyi di mode terang */
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 340px;
+  height: auto;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.95;
+}
+html[data-theme="dark"] .gallery-dark-decor{
+  display: block; /* muncul hanya saat dark mode */
+}
+.gallery-dark-decor-right{
+  right: 20px;
+}
+.gallery-dark-decor-left{
+  left: 20px;
+  transform: translateY(-50%) scaleX(-1); /* cermin supaya arahnya berlawanan dengan sisi kanan */
+}
+
+/* Sembunyikan dekorasi otomatis kalau layar tidak cukup lebar untuk menampung swiper + dekorasi kiri-kanan */
+@media (max-width: 1100px){
+  .gallery-dark-decor{
+    display: none !important;
+  }
+}
+
 .carousel{
   position:relative;
   max-width: 560px;
@@ -504,12 +537,6 @@ img{ max-width:100%; display:block; }
   }
   .gallery-photos{
     padding: 20px 20px;
-  }
-  .gallery-photos .carousel-slide{
-    padding: 0 6px;
-  }
-  .gallery-photo img{
-    height: 150px;
   }
 }
 
@@ -1017,6 +1044,10 @@ img{ max-width:100%; display:block; }
     padding:14px 16px 20px;
   }
 
+  .gallery-dark-decor{
+    display:none !important;
+  }
+
   .gallery-photos .carousel{
     width:100%;
     overflow:hidden;
@@ -1029,16 +1060,9 @@ img{ max-width:100%; display:block; }
   }
 
   .gallery-photos .carousel-slide{
-    min-width:100%;
-    width:100%;
-    flex:0 0 100%;
-    display:flex;
-    gap:10px;
-  }
-
-  .gallery-photos .gallery-photo{
-    flex:1 1 50%;
-    min-width:0;
+    flex: 0 0 86%;
+    box-sizing: border-box;
+    padding: 0 14px 0 0;
   }
 
   .gallery-photos .gallery-photo img{
@@ -1170,5 +1194,252 @@ img{ max-width:100%; display:block; }
 
   .alamat-map{
     height:230px;
+  }
+}
+
+/* =========================================================
+   MOBILE PHOTO / LAYOUT FIX
+   Override terakhir untuk menjaga layout benar-benar responsif
+   ========================================================= */
+@media screen and (max-width: 640px){
+
+  html, body{
+    width:100%;
+    max-width:100%;
+    overflow-x:hidden;
+  }
+
+  *, *::before, *::after{
+    max-width:100%;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding:28px 16px 34px;
+  }
+
+  .hero-inner{
+    width:100%;
+    max-width:100%;
+    gap:18px;
+  }
+
+  .hero-box{
+    width:100%;
+    max-width:100%;
+    padding:18px;
+    font-size:20px;
+  }
+
+  .hero-img{
+    width:100%;
+    max-width:100%;
+    height:auto;
+    aspect-ratio:16 / 10;
+  }
+
+  /* ---------- TENTANG PRODI ---------- */
+  .tentang-prodi-content{
+    width:100%;
+    max-width:100%;
+    gap:20px;
+    align-items:stretch;
+  }
+
+  .tentang-prodi-img{
+    width:100%;
+    max-width:100%;
+    flex:0 0 100%;
+  }
+
+  .tentang-prodi-text{
+    width:100%;
+    max-width:100%;
+    min-width:0;
+    flex:0 0 100%;
+    margin-left:0;
+    padding:0;
+    overflow-wrap:break-word;
+    word-wrap:break-word;
+    white-space:normal;
+  }
+
+  .tentang-prodi-img img{
+    width:100%;
+    height:auto;
+    max-height:280px;
+    object-fit:contain;
+    background:var(--card-bg);
+  }
+
+  /* ---------- PARTNERSHIP ---------- */
+  .partner-card{
+    width:100%;
+    max-width:100%;
+    box-sizing:border-box;
+    overflow:hidden;
+  }
+
+  .partner-card-img{
+    width:100%;
+    max-width:100%;
+  }
+
+  .partner-card-img img{
+    width:100%;
+    height:auto;
+    max-height:280px;
+    object-fit:contain;
+    background:var(--page-bg);
+  }
+
+  .partner-card-text{
+    width:100%;
+    max-width:100%;
+    min-width:0;
+  }
+
+  /* ---------- GALLERY ---------- */
+  .gallery-photos{
+    width:100%;
+    max-width:100%;
+    padding:18px 16px 24px;
+    overflow:hidden;
+  }
+
+  .gallery-photos .carousel{
+    width:100%;
+    max-width:100%;
+    overflow:hidden;
+  }
+
+  .gallery-photos .carousel-track{
+    width:100%;
+    display:flex;
+    align-items:flex-start;
+  }
+
+  /* 1 foto penuh di layar HP — tidak ada lagi efek "peek" 86% */
+  .gallery-photos .carousel-slide{
+    flex:0 0 100%;
+    width:100%;
+    min-width:100%;
+    padding:0;
+    box-sizing:border-box;
+  }
+
+  .gallery-photo{
+    width:100%;
+    max-width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+  }
+
+  /* Semua foto disamakan tingginya & dipotong rapi ke tengah, tanpa area putih */
+  .gallery-photo img,
+  .gallery-photos .gallery-photo img{
+    display:block;
+    width:100%;
+    height:230px;
+    max-width:100%;
+    max-height:none;
+    object-fit:cover;
+    object-position:center;
+  }
+
+  .gallery-photos .carousel-dots{
+    margin-top:14px;
+    position:static;
+  }
+
+  /* ---------- MEDIA SOSIAL ---------- */
+  .social-row{
+    width:100%;
+    max-width:100%;
+    margin:0;
+  }
+
+  .kontak-card-social{
+    width:100%;
+    max-width:100%;
+    min-width:0;
+    margin-left:0 !important;
+    margin-right:0 !important;
+    box-sizing:border-box;
+  }
+
+  .kontak-social-img{
+    width:100%;
+    max-width:100%;
+    height:auto;
+    max-height:280px;
+    object-fit:contain;
+  }
+
+  .kontak-ig-button,
+  .kontak-web-button{
+    width:100%;
+    max-width:100%;
+    box-sizing:border-box;
+    font-size:15px;
+    line-height:1.4;
+    padding:13px 18px;
+  }
+
+  /* ---------- ALAMAT / MAP ---------- */
+  .alamat-inner,
+  .alamat-text-block,
+  .alamat-map{
+    width:100%;
+    max-width:100%;
+    min-width:0;
+  }
+
+  .alamat-map{
+    height:260px;
+  }
+
+  .alamat-map iframe{
+    display:block;
+    width:100%;
+    max-width:100%;
+    height:100%;
+  }
+}
+
+@media screen and (max-width:390px){
+  .hero{
+    padding-left:12px;
+    padding-right:12px;
+  }
+
+  .hero-img{
+    aspect-ratio:16 / 10;
+    height:auto;
+  }
+
+  .tentang-prodi,
+  .mitra-partnership,
+  .kontak,
+  .alamat{
+    padding-left:12px;
+    padding-right:12px;
+  }
+
+  .gallery-photos{
+    padding-left:12px;
+    padding-right:12px;
+  }
+
+  .gallery-photo img,
+  .gallery-photos .gallery-photo img{
+    height:175px;
+    max-height:none;
+  }
+
+  .partner-card{
+    padding:14px;
   }
 }
