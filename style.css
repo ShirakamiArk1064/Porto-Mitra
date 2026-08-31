@@ -292,10 +292,13 @@ img{ max-width:100%; display:block; }
   background: var(--card-bg);
   border-radius: 6px;
   padding: 25px;
+  margin-bottom: 25px;
+}
+
+.partner-card-top{
   display:flex;
   align-items:flex-start;
   gap:30px;
-  margin-bottom: 25px;
   flex-wrap:wrap;
 }
 
@@ -330,6 +333,33 @@ img{ max-width:100%; display:block; }
   margin-bottom: 0;
 }
 
+/* ===== Galeri foto di dalam card mitra (gabungan section Gallery) ===== */
+.partner-card-gallery{
+  margin-top: 22px;
+  padding-top: 6px;
+}
+.partner-gallery-divider{
+  display:block;
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+  margin: 0 auto 14px;
+}
+.partner-gallery-block + .partner-gallery-block{
+  margin-top: 20px;
+}
+.partner-gallery-label{
+  display:block;
+  color: var(--card-heading);
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.partner-card-gallery .gallery-photos{
+  background: transparent;
+  padding: 10px 30px;
+}
+
 @media(max-width:640px){
   .mitra-partnership{
     padding: 30px 20px 40px;
@@ -343,6 +373,8 @@ img{ max-width:100%; display:block; }
   }
    .partner-card{
     padding: 16px;
+  }
+  .partner-card-top{
     gap: 16px;
   }
   .partner-card-img{
@@ -976,11 +1008,14 @@ html[data-theme="dark"] .gallery-dark-decor{
 
   .partner-card{
     width:100%;
+    padding:14px;
+    margin-bottom:16px;
+  }
+
+  .partner-card-top{
     display:flex;
     flex-direction:column;
     gap:14px;
-    padding:14px;
-    margin-bottom:16px;
   }
 
   .partner-card-img{
@@ -1280,23 +1315,61 @@ html[data-theme="dark"] .gallery-dark-decor{
     overflow:hidden;
   }
 
-  .partner-card-img{
+  .partner-card-top{
+    display:flex;
+    flex-direction:row;
+    flex-wrap:nowrap;
+    align-items:flex-start;
+    gap:12px;
     width:100%;
-    max-width:100%;
+  }
+
+  .partner-card-img{
+    flex:0 0 38%;
+    width:38%;
+    max-width:38%;
   }
 
   .partner-card-img img{
     width:100%;
-    height:auto;
-    max-height:280px;
-    object-fit:contain;
-    background:var(--page-bg);
+    height:110px;
+    max-height:none;
+    object-fit:cover;
+    background:none;
+    border-radius:4px;
   }
 
   .partner-card-text{
-    width:100%;
-    max-width:100%;
+    flex:1 1 auto;
+    width:auto;
+    max-width:none;
     min-width:0;
+  }
+
+  .partner-card-text h3{
+    font-size:16px;
+    line-height:1.25;
+    margin-bottom:6px;
+  }
+
+  .partner-card-text p{
+    font-size:12.5px;
+    line-height:1.5;
+    margin-bottom:6px;
+  }
+
+  .partner-card-gallery{
+    margin-top:16px;
+    padding-top:2px;
+  }
+
+  .partner-gallery-divider{
+    max-width:260px;
+    margin-bottom:10px;
+  }
+
+  .partner-card-gallery .gallery-photos{
+    padding:8px 0;
   }
 
   /* ---------- GALLERY ---------- */
